@@ -23,20 +23,37 @@
 
 # 📚 NestJS Books CRUD API
 
-Simple CRUD API for managing books using **NestJS**.
+Simple CRUD API for managing books using **NestJS** and **Prisma ORM** with PostgreSQL.
 
 ## 🚀 Features
 
-- Create, Read, Update, Delete books
-- Clean and modular code (Controller, Service, DTO)
-- In-memory storage (easy to switch to DB)
+- Create, Read, Update, Delete books with persistent database storage
+- Uses **Prisma** as ORM to interact with PostgreSQL
+- Modular architecture with Controller and Service layers
+- Full CRUD functionality tested with Postman or any API client
+
+## 🛠️ Technologies Used
+
+- NestJS
+- Prisma ORM
+- PostgreSQL
+- UUID for book IDs
+- Postman for API testing
 
 ## 📬 API Endpoints
 
-| Method | Endpoint   | Description   |
-| ------ | ---------- | ------------- |
-| GET    | /books     | Get all books |
-| GET    | /books/:id | Get one book  |
-| POST   | /books     | Add a book    |
-| PATCH  | /books/:id | Update a book |
-| DELETE | /books/:id | Delete a book |
+| Method | Endpoint   | Description             |
+| ------ | ---------- | ----------------------- |
+| GET    | /books     | Get all books           |
+| GET    | /books/:id | Get one book by ID      |
+| POST   | /books     | Add a new book          |
+| PATCH  | /books/:id | Update an existing book |
+| DELETE | /books/:id | Delete a book by ID     |
+
+## ⚙️ Setup and Usage
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```

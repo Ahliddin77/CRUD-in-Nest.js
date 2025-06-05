@@ -1,5 +1,5 @@
 export interface IBook {
-  id: string;
+  id?: number;
   name: string;
   year: number;
   isSold: boolean;

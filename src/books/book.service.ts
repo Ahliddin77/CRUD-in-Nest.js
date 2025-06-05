@@ -1,66 +1,36 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
-import { v4 as uuid } from 'uuid';
+import { PrismaService } from '../prisma.service';
 import { IBook } from './interfaces';
-import { find } from 'rxjs';
 
 @Injectable()
 export class BookService {
-  private books: IBook[] = [];
+  constructor(private readonly prisma: PrismaService) {}
 
-  getAll() {
-    return {
-      message: 'Success',
-      data: this.books,
-    };
+  async getAll() {
+    return await this.prisma.books.findMany();
   }
 
-  get(id: string) {
-    const findBook = this.books.find((book) => book.id === id);
-    if (findBook) {
-      return {
-        message: 'success',
-        data: findBook,
-      };
-    }
-    throw new NotFoundException('book is not found by this id');
+  async get(id: number) {
+    const book = await this.prisma.books.findUnique({ where: { id } });
+    if (!book) throw new NotFoundException('Book not found');
+    return book;
   }
 
-  create(book: IBook) {
-    book.id = uuid();
-    this.books.push(book);
-
-    return { message: 'returned successfully' };
+  async create(data: IBook) {
+    const { id, ...bookData } = data;
+    return await this.prisma.books.create({ data: bookData });
   }
 
-  update(id: string, partialBook: Partial<IBook>) {
-    const findBook = this.books.find((book) => book.id === id);
-
-    if (!findBook) throw new NotFoundException('book is not found by this id');
-
-    this.books.map((book) => {
-      if (book.id === id) {
-        return {
-          ...book,
-          ...partialBook,
-        };
-      } else return book;
+  async update(id: number, data: Partial<IBook>) {
+    await this.get(id);
+    return await this.prisma.books.update({
+      where: { id },
+      data,
     });
-
-    return {
-      message: 'Successfully updated',
-    };
   }
 
-  delete(id: string) {
-    const findBook = this.books.find((book) => book.id === id);
-
-    if (!findBook) throw new NotFoundException('book is not found by this id');
-
-    this.books.filter((book) => book.id !== id);
-
-    return {
-      message: 'Successfully deleted',
-    };
+  async delete(id: number) {
+    await this.get(id);
+    return await this.prisma.books.delete({ where: { id } });
   }
 }
